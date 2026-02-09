@@ -35,7 +35,7 @@
                 </div>
 
                 {{-- زر الدخول --}}
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 hidden md:flex">
                     @auth
                         @if(auth()->user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="bg-[#112c71] text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition text-sm font-medium">لوحة التحكم</a>
