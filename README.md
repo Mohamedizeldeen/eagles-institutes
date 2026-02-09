@@ -1,59 +1,364 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# معهد النسور للغة الإنجليزية
+## Eagles Institutes - English Language Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive, modern web application for managing English language courses, student enrollment, payments, certificates, and blog articles. Built with Laravel 12, featuring an intuitive admin dashboard and professional public-facing website.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Table of Contents
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Database Setup](#database-setup)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [Default Credentials](#default-credentials)
+- [API Routes](#api-routes)
+- [Testing](#testing)
+- [Support](#support)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Features
 
-## Learning Laravel
+### Admin Dashboard
+- **Course Management** - Create, edit, delete, and manage English language courses
+  - Three proficiency levels: Beginner (مبتدئ), Intermediate (متوسط), Advanced (متقدم)
+  - Course details: price, duration, maximum students, schedules
+  - Image uploading and course visibility control
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Student Management** - Complete student database with tracking
+  - Student ID numbers (Sudanese format: SD-YYYY-NNN)
+  - Contact information and personal details
+  - Gender and date of birth tracking
+  - Student status management
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Enrollment & Payment Tracking**
+  - Enroll students in courses
+  - Track payment status: Paid (مدفوع), Partial (جزئي), Unpaid (غير مدفوع)
+  - Manage enrollment status: Registered (مسجل), Completed (مكتمل), Withdrawn (منسحب), Deferred (مؤجل)
+  - Automatic duplicate enrollment prevention
 
-## Laravel Sponsors
+- **Certificate Management**
+  - Generate certificates upon course completion
+  - Auto-generated certificate numbers (CERT-YYYY-NNNN format)
+  - Print-ready certificate templates with decorative styling
+  - Grade tracking and notes
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Article Management** - Blog and educational content
+  - Rich article creation with image support
+  - Auto-slug generation from titles
+  - Publish/unpublish functionality
+  - Author attribution
 
-### Premium Partners
+- **Financial Reports**
+  - Monthly revenue analytics
+  - Payment status distribution charts
+  - Course-wise revenue breakdown
+  - Level-wise enrollment statistics
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Public Website
+- Professional landing page with course highlights
+- Course catalog with level filtering
+- Detailed course information pages
+- Educational blog with article search
+- Institution information page
+- Contact form for inquiries
+- Responsive RTL (Right-to-Left) design for Arabic
 
-## Contributing
+### Core Features
+- Session-based authentication
+- Admin-only access with middleware protection
+- In-person payment tracking (no online payment integration)
+- Comprehensive search and filtering
+- Mobile-responsive design
+- Arabic language support (complete RTL interface)
+- Database relationship management with Laravel ORM
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🛠 Tech Stack
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Component | Technology | Version |
+|-----------|-----------|---------|
+| Framework | Laravel | 12.x |
+| Language | PHP | 8.2+ |
+| Database | MySQL | 8.0+ |
+| Frontend | Blade Templates | Latest |
+| CSS Framework | Tailwind CSS | 4.0 |
+| Build Tool | Vite | 7.0+ |
+| Testing | Pest/PHPUnit | Latest |
+| Server | Apache/Laravel Artisan | Latest |
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📦 Prerequisites
 
-## License
+Before installation, ensure you have the following installed:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **PHP** 8.2 or higher
+- **Composer** (PHP dependency manager)
+- **MySQL** 8.0 or higher
+- **Node.js** 18+ and npm 9+ (for frontend assets)
+- **Git** (for version control)
+
+### Optional
+- **Laravel Sail** (recommended for consistent development environment)
+- **Docker** (if using Sail)
+
+---
+
+## 🚀 Installation
+
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd eagles-institutes
+```
+
+### 2. Install PHP Dependencies
+```bash
+composer install
+```
+
+### 3. Install Node Dependencies
+```bash
+npm install
+```
+
+### 4. Copy Environment File
+```bash
+cp .env.example .env
+```
+
+---
+
+## ⚙️ Configuration
+
+### 1. Generate Application Key
+```bash
+php artisan key:generate
+```
+
+### 2. Update .env File
+Edit the `.env` file and configure:
+
+```env
+APP_NAME="معهد النسور للغة الإنجليزية"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+
+# Database Configuration
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=eagles_institutes
+DB_USER=root
+DB_PASSWORD=your_password
+
+# App Locale
+APP_LOCALE=ar
+APP_FALLBACK_LOCALE=ar
+FAKER_LOCALE=ar_SA
+
+# Timezone
+APP_TIMEZONE=Africa/Khartoum
+```
+
+---
+
+## 🗄️ Database Setup
+
+### 1. Create Database (Manual)
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS eagles_institutes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+```
+
+Or use Laravel migration with seed:
+
+### 2. Run Migrations & Seeders
+```bash
+php artisan migrate:fresh --seed
+```
+
+This will:
+- Create all necessary tables
+- Seed database with sample data (courses, students, enrollments, certificates, articles)
+- Create admin user: `admin@eagles.com` / password: `password`
+
+### 3. Create Storage Link
+```bash
+php artisan storage:link
+```
+
+---
+
+## ▶️ Running the Application
+
+### Development Server
+```bash
+php artisan serve
+```
+
+The application will be available at: **http://127.0.0.1:8000**
+
+### Frontend Development (Vite Watch Mode)
+In a separate terminal:
+```bash
+npm run dev
+```
+
+### Production Build
+```bash
+npm run build
+```
+
+---
+
+## 📁 Project Structure
+
+```
+eagles-institutes/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/          # Application controllers
+│   │   │   ├── Admin/            # Admin controllers
+│   │   │   └── Auth/             # Authentication
+│   │   ├── Middleware/           # Custom middleware
+│   │   └── Requests/             # Form requests
+│   ├── Models/                   # Database models
+│   └── Providers/                # Service providers
+├── database/
+│   ├── factories/                # Database factories
+│   ├── migrations/               # Database migrations
+│   └── seeders/                  # Database seeders
+├── resources/
+│   ├── css/                      # Stylesheets
+│   ├── js/                       # JavaScript files
+│   └── views/                    # Blade templates
+│       ├── admin/                # Admin panel views
+│       ├── auth/                 # Authentication views
+│       ├── layouts/              # Layout templates
+│       └── public/               # Public website views
+├── routes/
+│   ├── web.php                   # Web routes
+│   ├── api.php                   # API routes
+│   └── console.php               # Console routes
+├── storage/
+│   ├── app/                      # Application storage
+│   ├── framework/                # Framework storage
+│   └── logs/                     # Application logs
+├── tests/                        # Test files
+├── public/                       # Public assets
+├── config/                       # Configuration files
+├── bootstrap/                    # Bootstrap files
+└── composer.json                 # PHP dependencies
+```
+
+---
+
+## 🔐 Default Credentials
+
+**Admin Account:**
+- Email: `admin@eagles.com`
+- Password: `password`
+
+**Admin Panel:** http://127.0.0.1:8000/admin
+
+---
+
+## 🛣️ API Routes
+
+### Public Routes
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/` | Home page |
+| GET | `/about` | About page |
+| GET | `/contact` | Contact page |
+| GET | `/courses` | Course listing |
+| GET | `/courses/{course}` | Course details |
+| GET | `/articles` | Articles listing |
+| GET | `/articles/{slug}` | Article details |
+| POST | `/contact` | Submit contact form |
+
+### Authentication Routes
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/login` | Login form |
+| POST | `/login` | Process login |
+| POST | `/logout` | Logout |
+
+### Admin Routes (`/admin`)
+| Resource | Methods | Features |
+|----------|---------|----------|
+| Courses | CRUD | Create, read, update, delete courses |
+| Students | CRUD | Manage student database |
+| Enrollments | CRUD + Complete | Manage enrollments and mark as complete |
+| Certificates | Create, List, Show, Print, Delete | Certificate management |
+| Articles | CRUD | Blog post management |
+| Reports | List | View financial reports |
+| Contacts | List, Show, Delete | Manage contact form submissions |
+
+---
+
+## 🧪 Testing
+
+Run the test suite:
+```bash
+php artisan test
+```
+
+Run tests with coverage:
+```bash
+php artisan test --coverage
+```
+
+---
+
+## 📝 Database Schema
+
+### Core Tables
+- **users** - Admin accounts
+- **courses** - Course information
+- **students** - Student records
+- **enrollments** - Course enrollments
+- **certificates** - Issued certificates
+- **articles** - Blog articles
+- **contacts** - Contact form submissions
+- **settings** - Application settings
+
+---
+
+## 🌐 Localization
+
+The application is fully Arabic-localized with RTL (Right-to-Left) support. All UI elements, error messages, and content are in Arabic. No additional localization files are required.
+
+---
+
+## 📧 Support
+
+For issues, feature requests, or questions:
+
+1. Check existing documentation
+2. Review the `artisan` command help: `php artisan help`
+3. Contact the development team
+4. Review Laravel documentation: https://laravel.com/docs
+
+---
+
+## 📄 License
+
+This project is proprietary software for Eagles Institutes.
+
+---
+
+## 🔄 Version History
+
+- **v1.0.0** (February 2026) - Initial release with core features
+
+---
+
+**Last Updated:** February 9, 2026
