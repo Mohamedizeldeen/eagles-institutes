@@ -10,7 +10,9 @@
 <body class="bg-gradient-to-br from-blue-900 to-blue-700 min-h-screen flex items-center justify-center font-sans p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         <div class="text-center mb-8">
-            <div class="bg-blue-700 text-white w-16 h-16 rounded-xl flex items-center justify-center font-bold text-2xl mx-auto mb-4">EN</div>
+            <div class="bg-white text-white w-16 h-16 rounded-xl flex items-center justify-center font-bold text-2xl mx-auto mb-4">
+                <img src="{{ asset('images/logo.png') }}" alt="معهد النسور">
+            </div>
             <h1 class="text-2xl font-bold text-gray-800">معهد النسور</h1>
             <p class="text-gray-500 mt-1">تسجيل الدخول إلى لوحة التحكم</p>
         </div>
