@@ -15,6 +15,7 @@ class StudentController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('name_en', 'like', '%' . $request->search . '%')
                   ->orWhere('phone', 'like', '%' . $request->search . '%')
                   ->orWhere('id_number', 'like', '%' . $request->search . '%')
                   ->orWhere('email', 'like', '%' . $request->search . '%');
@@ -41,12 +42,14 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_en' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'required|string|max:20',
             'id_number' => 'required|string|max:30|unique:students,id_number',
             'gender' => 'nullable|in:ذكر,أنثى',
             'date_of_birth' => 'nullable|date',
             'address' => 'nullable|string',
+            'address_en' => 'nullable|string',
             'notes' => 'nullable|string',
         ]);
 
@@ -71,12 +74,14 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_en' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'required|string|max:20',
             'id_number' => 'required|string|max:30|unique:students,id_number,' . $student->id,
             'gender' => 'nullable|in:ذكر,أنثى',
             'date_of_birth' => 'nullable|date',
             'address' => 'nullable|string',
+            'address_en' => 'nullable|string',
             'notes' => 'nullable|string',
             'is_active' => 'boolean',
         ]);

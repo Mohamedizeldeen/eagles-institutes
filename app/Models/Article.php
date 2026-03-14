@@ -10,14 +10,50 @@ class Article extends Model
 {
     protected $fillable = [
         'title',
+        'title_en',
         'slug',
         'excerpt',
+        'excerpt_en',
         'content',
+        'content_en',
         'image',
         'created_by',
         'is_published',
         'published_at',
     ];
+
+    /**
+     * Get the localized article title based on current locale.
+     */
+    public function getLocalizedTitleAttribute(): string
+    {
+        if (app()->getLocale() === 'en' && !empty($this->title_en)) {
+            return $this->title_en;
+        }
+        return $this->title;
+    }
+
+    /**
+     * Get the localized article excerpt based on current locale.
+     */
+    public function getLocalizedExcerptAttribute(): ?string
+    {
+        if (app()->getLocale() === 'en' && !empty($this->excerpt_en)) {
+            return $this->excerpt_en;
+        }
+        return $this->excerpt;
+    }
+
+    /**
+     * Get the localized article content based on current locale.
+     */
+    public function getLocalizedContentAttribute(): string
+    {
+        if (app()->getLocale() === 'en' && !empty($this->content_en)) {
+            return $this->content_en;
+        }
+        return $this->content;
+    }
 
     protected function casts(): array
     {

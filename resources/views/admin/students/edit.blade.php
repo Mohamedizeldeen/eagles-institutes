@@ -1,6 +1,6 @@
 @extends('layouts.admin')
-@section('title', 'تعديل الطالب: ' . $student->name)
-@section('page-title', 'تعديل بيانات الطالب')
+@section('title', __('messages.students.edit') . ': ' . $student->localized_name)
+@section('page-title', __('messages.students.edit'))
 
 @section('content')
 <div class="max-w-3xl">
@@ -9,8 +9,8 @@
             @csrf @method('PUT')
             @include('admin.students._form', ['student' => $student])
             <div class="flex items-center gap-3 mt-6 pt-6 border-t">
-                <button type="submit" class="bg-blue-700 text-white px-6 py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">تحديث البيانات</button>
-                <a href="{{ route('admin.students.index') }}" class="text-gray-600 hover:text-gray-800 px-4 py-2.5">إلغاء</a>
+                <button type="submit" class="bg-blue-700 text-white px-6 py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">{{ __('messages.students.update_data') }}</button>
+                <a href="{{ route('admin.students.index') }}" class="text-gray-600 hover:text-gray-800 px-4 py-2.5">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

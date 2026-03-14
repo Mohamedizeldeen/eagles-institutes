@@ -45,7 +45,7 @@ class CertificateController extends Controller
     {
         $validated = $request->validate([
             'enrollment_id' => 'required|exists:enrollments,id|unique:certificates,enrollment_id',
-            'grade' => 'nullable|string|max:50',
+            'grade' => 'nullable|in:excellent,very_good,good,pass',
             'notes' => 'nullable|string',
             'issued_at' => 'required|date',
         ]);

@@ -13,9 +13,11 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'name_en',
         'email',
         'password',
         'is_admin',
+        'role',
         'phone',
     ];
 
@@ -33,9 +35,46 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Get the localized name based on current locale
+     */
+    public function getLocalizedNameAttribute(): string
+    {
+        if (app()->getLocale() === 'en' && $this->name_en) {
+            return $this->name_en;
+        }
+        return $this->name;
+    }
+
     public function isAdmin(): bool
     {
-        return $this->is_admin;
+        return $this->role === 'admin' || $this->is_admin;
+    }
+
+    public function isReceptionist(): bool
+    {
+        return $this->role === 'receptionist';
+    }
+
+    /**
+     * Check if user is staff (admin or receptionist)
+     */
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['admin', 'receptionist']);
+    }
+
+    /**
+     * Get the display role name
+     */
+    public function getRoleNameAttribute(): string
+    {
+        $locale = app()->getLocale();
+        $roles = [
+            'admin' => $locale === 'ar' ? 'مدير النظام' : 'Admin',
+            'receptionist' => $locale === 'ar' ? 'موظف استقبال' : 'Receptionist',
+        ];
+        return $roles[$this->role] ?? $this->role;
     }
 
     public function articles(): HasMany

@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        if (auth()->check()) {
+        if (auth()->check() && auth()->user()->isStaff()) {
             return redirect()->route('admin.dashboard');
         }
         return view('auth.login');
@@ -26,7 +26,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            if (auth()->user()->isAdmin()) {
+            if (auth()->user()->isStaff()) {
                 return redirect()->intended(route('admin.dashboard'));
             }
 
@@ -34,7 +34,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'بيانات الدخول غير صحيحة',
+            'email' => __('messages.auth.invalid_credentials'),
         ])->onlyInput('email');
     }
 

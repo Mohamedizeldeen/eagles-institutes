@@ -9,7 +9,9 @@ class Course extends Model
 {
     protected $fillable = [
         'name',
+        'name_en',
         'description',
+        'description_en',
         'image',
         'level',
         'price',
@@ -20,6 +22,41 @@ class Course extends Model
         'is_active',
         'show_on_website',
     ];
+
+    /**
+     * Get the localized course name based on current locale.
+     */
+    public function getLocalizedNameAttribute(): string
+    {
+        if (app()->getLocale() === 'en' && !empty($this->name_en)) {
+            return $this->name_en;
+        }
+        return $this->name;
+    }
+
+    /**
+     * Get the localized course description based on current locale.
+     */
+    public function getLocalizedDescriptionAttribute(): ?string
+    {
+        if (app()->getLocale() === 'en' && !empty($this->description_en)) {
+            return $this->description_en;
+        }
+        return $this->description;
+    }
+
+    /**
+     * Get the localized level name.
+     */
+    public function getLocalizedLevelAttribute(): string
+    {
+        $levels = [
+            'مبتدئ' => __('messages.courses.beginner'),
+            'متوسط' => __('messages.courses.intermediate'),
+            'متقدم' => __('messages.courses.advanced'),
+        ];
+        return $levels[$this->level] ?? $this->level;
+    }
 
     protected function casts(): array
     {

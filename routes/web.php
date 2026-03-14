@@ -11,12 +11,25 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnrollmentController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| الموقع العام
+| Language Switcher
+|--------------------------------------------------------------------------
+*/
+Route::get('/locale/{locale}', function (string $locale) {
+    if (in_array($locale, ['ar', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('locale.switch');
+
+/*
+|--------------------------------------------------------------------------
+| Public Website
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -33,7 +46,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 /*
 |--------------------------------------------------------------------------
-| تسجيل الدخول
+| Authentication
 |--------------------------------------------------------------------------
 */
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -42,34 +55,84 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
-| لوحة التحكم
+| Admin Panel - Staff Access (Admin + Receptionist)
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'staff'])->group(function () {
+    // Dashboard - accessible by all staff
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // الدورات
-    Route::resource('courses', CourseController::class);
+    // Courses - Receptionist can view only, Admin has full CRUD
+    Route::get('courses', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
-    // الطلاب
-    Route::resource('students', StudentController::class);
+    // Students - Receptionist can create/view, Admin has full CRUD
+    Route::get('students', [StudentController::class, 'index'])->name('students.index');
+    Route::get('students/create', [StudentController::class, 'create'])->name('students.create');
+    Route::post('students', [StudentController::class, 'store'])->name('students.store');
+    Route::get('students/{student}', [StudentController::class, 'show'])->name('students.show');
 
-    // التسجيلات
-    Route::resource('enrollments', EnrollmentController::class);
-    Route::post('enrollments/{enrollment}/complete', [EnrollmentController::class, 'complete'])->name('enrollments.complete');
+    // Enrollments - Receptionist can create/view, Admin has full CRUD
+    Route::get('enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    Route::get('enrollments/create', [EnrollmentController::class, 'create'])->name('enrollments.create');
+    Route::post('enrollments', [EnrollmentController::class, 'store'])->name('enrollments.store');
 
-    // الشهادات
-    Route::resource('certificates', CertificateController::class)->except(['edit', 'update']);
+    // Certificates - Receptionist can view/print, Admin has full CRUD
+    Route::get('certificates', [CertificateController::class, 'index'])->name('certificates.index');
+    Route::get('certificates/create', [CertificateController::class, 'create'])->name('certificates.create')->middleware('admin');
+    Route::post('certificates', [CertificateController::class, 'store'])->name('certificates.store')->middleware('admin');
+    Route::delete('certificates/{certificate}', [CertificateController::class, 'destroy'])->name('certificates.destroy')->middleware('admin');
+    Route::get('certificates/{certificate}', [CertificateController::class, 'show'])->name('certificates.show');
     Route::get('certificates/{certificate}/print', [CertificateController::class, 'print'])->name('certificates.print');
 
-    // المقالات
-    Route::resource('articles', ArticleController::class)->except(['show']);
-
-    // التقارير
-    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
-
-    //CONTACTS
-    Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
-    Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    // Contacts/Messages - Receptionist can view, Admin can delete
     Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Only Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware('admin')->group(function () {
+        // Course full CRUD (create, edit, delete)
+        Route::get('courses/create', [CourseController::class, 'create'])->name('courses.create');
+        Route::post('courses', [CourseController::class, 'store'])->name('courses.store');
+        Route::get('courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+        Route::put('courses/{course}', [CourseController::class, 'update'])->name('courses.update');
+        Route::delete('courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
+
+        // Student edit/delete
+        Route::get('students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
+        Route::put('students/{student}', [StudentController::class, 'update'])->name('students.update');
+        Route::delete('students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+        // Enrollment edit/delete/complete
+        Route::get('enrollments/{enrollment}', [EnrollmentController::class, 'show'])->name('enrollments.show');
+        Route::get('enrollments/{enrollment}/edit', [EnrollmentController::class, 'edit'])->name('enrollments.edit');
+        Route::put('enrollments/{enrollment}', [EnrollmentController::class, 'update'])->name('enrollments.update');
+        Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy'])->name('enrollments.destroy');
+        Route::post('enrollments/{enrollment}/complete', [EnrollmentController::class, 'complete'])->name('enrollments.complete');
+
+        // Articles - Admin only
+        Route::resource('articles', ArticleController::class)->except(['show']);
+
+        // Reports - Admin only
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+
+        // Contact delete - Admin only
+        Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
+        // User management - Admin only
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('users', [UserController::class, 'store'])->name('users.store');
+        Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+
+    // Profile edit - any authenticated staff
+    Route::get('profile', [UserController::class, 'profile'])->name('profile.edit');
+    Route::put('profile', [UserController::class, 'updateProfile'])->name('profile.update');
 });

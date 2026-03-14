@@ -1,6 +1,6 @@
 @extends('layouts.admin')
-@section('title', 'مقال جديد')
-@section('page-title', 'إنشاء مقال جديد')
+@section('title', __('messages.articles.add'))
+@section('page-title', __('messages.articles.add'))
 
 @section('content')
 <div class="max-w-3xl">
@@ -9,8 +9,8 @@
             @csrf
             @include('admin.articles._form')
             <div class="flex items-center gap-3 mt-6 pt-6 border-t">
-                <button type="submit" class="bg-blue-700 text-white px-6 py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">حفظ المقال</button>
-                <a href="{{ route('admin.articles.index') }}" class="text-gray-600 hover:text-gray-800 px-4 py-2.5">إلغاء</a>
+                <button type="submit" class="bg-blue-700 text-white px-6 py-2.5 rounded-lg hover:bg-blue-800 transition font-medium">{{ __('messages.articles.save_article') }}</button>
+                <a href="{{ route('admin.articles.index') }}" class="text-gray-600 hover:text-gray-800 px-4 py-2.5">{{ __('messages.cancel') }}</a>
             </div>
         </form>
     </div>

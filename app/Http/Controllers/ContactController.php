@@ -22,7 +22,7 @@ class ContactController extends Controller
 
         \App\Models\Contact::create($validated);
 
-        return redirect()->back()->with('success', 'تم إرسال رسالتك بنجاح!');
+        return redirect()->back()->with('success', __('messages.contacts.sent_success'));
     }
     public function show($id)
     {
@@ -33,6 +33,6 @@ class ContactController extends Controller
     {
         $contact = \App\Models\Contact::findOrFail($id);
         $contact->delete();
-        return redirect()->route('admin.contacts.index')->with('success', 'تم حذف الرسالة بنجاح!');
+        return redirect()->route('admin.contacts.index')->with('success', __('messages.contacts.deleted_success'));
     }
 }

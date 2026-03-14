@@ -6,12 +6,17 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminMiddleware
+class SetLocale
 {
+    /**
+     * Set the application locale based on session/cookie.
+     */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            abort(403, __('messages.unauthorized'));
+        $locale = session('locale', config('app.locale', 'ar'));
+
+        if (in_array($locale, ['ar', 'en'])) {
+            app()->setLocale($locale);
         }
 
         return $next($request);

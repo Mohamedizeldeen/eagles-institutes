@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{ $currentLocale }}" dir="{{ $dir }}">
 <head>
     <meta charset="UTF-8">
-    <title>شهادة - {{ $certificate->certificate_number }}</title>
+    <title>{{ __('messages.certificates.cert_title') }} - {{ $certificate->certificate_number }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,8 +49,8 @@
 </head>
 <body>
     <div class="no-print" style="text-align: center; padding: 15px; background: #1e40af;">
-        <button onclick="window.print()" style="background: white; color: #1e40af; border: none; padding: 10px 30px; border-radius: 8px; font-family: Cairo; font-weight: 700; font-size: 16px; cursor: pointer;">طباعة الشهادة</button>
-        <a href="{{ route('admin.certificates.index') }}" style="color: white; margin-right: 20px; font-family: Cairo; text-decoration: none;">العودة</a>
+        <button onclick="window.print()" style="background: white; color: #1e40af; border: none; padding: 10px 30px; border-radius: 8px; font-family: Cairo; font-weight: 700; font-size: 16px; cursor: pointer;">{{ __('messages.certificates.print') }}</button>
+        <a href="{{ route('admin.certificates.index') }}" style="color: white; margin-inline-start: 20px; font-family: Cairo; text-decoration: none;">{{ __('messages.back') }}</a>
     </div>
 
     <div class="certificate">
@@ -64,38 +64,38 @@
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" class="logo-icon">
                 
             </div>
-            <span class="institute-name">معهد النسور للغة الإنجليزية</span>
+            <span class="institute-name">{{ __('messages.certificates.institute_name') }}</span>
 
-            <div class="certificate-title">شهادة إتمام دورة</div>
-            <div class="subtitle">رقم الهوية: {{ $certificate->student->id_number }}</div>
+            <div class="certificate-title">{{ __('messages.certificates.cert_title') }}</div>
+            <div class="subtitle">{{ __('messages.students.id_number') }}: {{ $certificate->student->id_number }}</div>
 
-            <p style="font-size: 16px; color: #6b7280;">يشهد معهد النسور للغة الإنجليزية بأن</p>
+            <p style="font-size: 16px; color: #6b7280;">{{ __('messages.certificates.certify_that') }}</p>
 
-            <div class="student-name">{{ $certificate->student->name }}</div>
+            <div class="student-name">{{ $certificate->student->localized_name }}</div>
 
             <div class="course-info">
-                قد أتم بنجاح دورة
+                {{ __('messages.certificates.completed_course') }}
                 <br>
-                <span class="course-name">{{ $certificate->course->name }}</span>
+                <span class="course-name">{{ $certificate->course->localized_name }}</span>
                 <br>
-                المستوى: {{ $certificate->course->level }}
+                {{ __('messages.courses.level') }}: {{ $certificate->course->level }}
                 @if($certificate->grade)
-                    | التقدير: {{ $certificate->grade }}
+                    | {{ __('messages.certificates.grade') }}: {{ __('messages.certificates.grades.' . $certificate->grade) }}
                 @endif
             </div>
 
             <div class="details">
                 <div class="detail-item">
-                    <div class="detail-label">تاريخ الإصدار</div>
+                    <div class="detail-label">{{ __('messages.certificates.issued_at') }}</div>
                     <div class="detail-value">{{ $certificate->issued_at->format('Y/m/d') }}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">مدة الدورة</div>
-                    <div class="detail-value">{{ $certificate->course->duration_hours }} ساعة</div>
+                    <div class="detail-label">{{ __('messages.certificates.course_duration') }}</div>
+                    <div class="detail-value">{{ $certificate->course->duration_hours }} {{ __('messages.courses.hours') }}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">المدير</div>
-                    <div class="detail-value" style="border-top: 2px solid #d1d5db; padding-top: 4px; min-width: 120px;">التوقيع</div>
+                    <div class="detail-label">{{ __('messages.certificates.director') }}</div>
+                    <div class="detail-value" style="border-top: 2px solid #d1d5db; padding-top: 4px; min-width: 120px;">{{ __('messages.certificates.signature') }}</div>
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Student;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -36,6 +37,38 @@ class DashboardController extends Controller
 
         $recentStudents = Student::latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentEnrollments', 'recentStudents'));
+        // Chart data: Monthly enrollments for last 6 months
+        $monthlyEnrollments = [];
+        $monthlyRevenue = [];
+        $monthLabels = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $date = Carbon::now()->subMonths($i);
+            $monthLabels[] = $date->month;
+            $monthlyEnrollments[] = Enrollment::whereMonth('enrolled_at', $date->month)
+                ->whereYear('enrolled_at', $date->year)
+                ->count();
+            $monthlyRevenue[] = (float) Enrollment::whereMonth('enrolled_at', $date->month)
+                ->whereYear('enrolled_at', $date->year)
+                ->sum('amount_paid');
+        }
+
+        // Course level distribution
+        $levelDistribution = Course::select('level', DB::raw('count(*) as count'))
+            ->where('is_active', true)
+            ->groupBy('level')
+            ->pluck('count', 'level')
+            ->toArray();
+
+        // Payment status breakdown
+        $paymentBreakdown = Enrollment::select('payment_status', DB::raw('count(*) as count'))
+            ->groupBy('payment_status')
+            ->pluck('count', 'payment_status')
+            ->toArray();
+
+        return view('admin.dashboard', compact(
+            'stats', 'recentEnrollments', 'recentStudents',
+            'monthLabels', 'monthlyEnrollments', 'monthlyRevenue',
+            'levelDistribution', 'paymentBreakdown'
+        ));
     }
 }
