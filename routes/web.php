@@ -64,6 +64,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'staff'])->group(fun
 
     // Courses - Receptionist can view only, Admin has full CRUD
     Route::get('courses', [CourseController::class, 'index'])->name('courses.index');
+
+    // Course full CRUD (create, edit, delete) - Admin only
+    // NOTE: These must be before courses/{course} to avoid the wildcard catching "create"
+    Route::middleware('admin')->group(function () {
+        Route::get('courses/create', [CourseController::class, 'create'])->name('courses.create');
+        Route::post('courses', [CourseController::class, 'store'])->name('courses.store');
+        Route::get('courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+        Route::put('courses/{course}', [CourseController::class, 'update'])->name('courses.update');
+        Route::delete('courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
+    });
+
     Route::get('courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
     // Students - Receptionist can create/view, Admin has full CRUD
@@ -95,13 +106,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'staff'])->group(fun
     |--------------------------------------------------------------------------
     */
     Route::middleware('admin')->group(function () {
-        // Course full CRUD (create, edit, delete)
-        Route::get('courses/create', [CourseController::class, 'create'])->name('courses.create');
-        Route::post('courses', [CourseController::class, 'store'])->name('courses.store');
-        Route::get('courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
-        Route::put('courses/{course}', [CourseController::class, 'update'])->name('courses.update');
-        Route::delete('courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
-
         // Student edit/delete
         Route::get('students/{student}/edit', [StudentController::class, 'edit'])->name('students.edit');
         Route::put('students/{student}', [StudentController::class, 'update'])->name('students.update');
