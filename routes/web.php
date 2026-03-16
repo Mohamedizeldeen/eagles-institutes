@@ -9,10 +9,12 @@ use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EnrollmentController;
+use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GalleryPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +45,8 @@ Route::get('/articles', [PublicArticleController::class, 'index'])->name('public
 Route::get('/articles/{article:slug}', [PublicArticleController::class, 'show'])->name('public.articles.show');
 
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/gallery', [GalleryPageController::class, 'index'])->name('public.gallery');
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +124,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'staff'])->group(fun
 
         // Articles - Admin only
         Route::resource('articles', ArticleController::class)->except(['show']);
+
+        // Gallery - Admin only
+        Route::get('gallery', [GalleryController::class, 'index'])->name('gallery.index');
+        Route::get('gallery/categories/create', [GalleryController::class, 'createCategory'])->name('gallery.categories.create');
+        Route::post('gallery/categories', [GalleryController::class, 'storeCategory'])->name('gallery.categories.store');
+        Route::get('gallery/categories/{category}/edit', [GalleryController::class, 'editCategory'])->name('gallery.categories.edit');
+        Route::put('gallery/categories/{category}', [GalleryController::class, 'updateCategory'])->name('gallery.categories.update');
+        Route::delete('gallery/categories/{category}', [GalleryController::class, 'destroyCategory'])->name('gallery.categories.destroy');
+        Route::get('gallery/images/create', [GalleryController::class, 'createImage'])->name('gallery.images.create');
+        Route::post('gallery/images', [GalleryController::class, 'storeImage'])->name('gallery.images.store');
+        Route::get('gallery/images/{image}/edit', [GalleryController::class, 'editImage'])->name('gallery.images.edit');
+        Route::put('gallery/images/{image}', [GalleryController::class, 'updateImage'])->name('gallery.images.update');
+        Route::delete('gallery/images/{image}', [GalleryController::class, 'destroyImage'])->name('gallery.images.destroy');
+        Route::post('gallery/images/update-order', [GalleryController::class, 'updateOrder'])->name('gallery.images.updateOrder');
 
         // Reports - Admin only
         Route::get('reports', [ReportController::class, 'index'])->name('reports.index');

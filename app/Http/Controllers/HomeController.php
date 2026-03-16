@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Course;
+use App\Models\GalleryImage;
 
 class HomeController extends Controller
 {
@@ -11,8 +12,14 @@ class HomeController extends Controller
     {
         $featuredCourses = Course::visibleOnWebsite()->latest()->take(6)->get();
         $latestArticles = Article::published()->latest()->take(3)->get();
+        $galleryImages = GalleryImage::homeFeatured()
+            ->with('category')
+            ->whereHas('category', fn($q) => $q->active())
+            ->orderBy('sort_order')
+            ->take(8)
+            ->get();
 
-        return view('public.home', compact('featuredCourses', 'latestArticles'));
+        return view('public.home', compact('featuredCourses', 'latestArticles', 'galleryImages'));
     }
 
     public function about()

@@ -323,6 +323,38 @@
     </section>
     @endif
 
+    {{-- Gallery Section --}}
+    @if($galleryImages->count() > 0)
+    <section class="py-24 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-4">
+                <div>
+                    <span class="inline-block text-sm font-bold tracking-widest text-blue-600 uppercase mb-3">{{ __('messages.gallery.title') }}</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900">{{ __('messages.gallery.home_title') }}</h2>
+                    <p class="text-gray-500 text-lg mt-3 max-w-xl">{{ __('messages.gallery.home_description') }}</p>
+                </div>
+                <a href="{{ route('public.gallery') }}" class="inline-flex items-center gap-2 border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white font-bold px-7 py-3.5 rounded-2xl transition-all duration-300 self-start md:self-auto">
+                    {{ __('messages.gallery.view_all') }}
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach($galleryImages as $gImg)
+                    <div class="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white card-hover">
+                        <div class="aspect-square overflow-hidden">
+                            <img src="{{ asset('storage/' . $gImg->image) }}" alt="{{ $gImg->localized_caption }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            @if($gImg->localized_caption)
+                                <p class="text-white text-sm font-medium">{{ $gImg->localized_caption }}</p>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
     {{-- CTA Section --}}
     <section class="py-24 relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-br from-[#112c71] via-[#1a3a7f] to-[#0f172a]"></div>
